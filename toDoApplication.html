@@ -1,0 +1,68 @@
+<template>
+	<div class="slds-grid slds-gutters">
+		<div class="slds-col">
+			<lightning-card title="Add New Task">
+				<div class="slds-var-p-around_small">
+					<lightning-input message-when-value-missing="Kindly Enter Task Name" type="text"
+						onchange={changehandler} required="true" name="taskname" value={taskname} label="Enter Task"
+						class="taskname" placeholder="Enter Task Details"></lightning-input>
+					<lightning-input type="date" field-level-help="Deafault End date is Today date"
+						onchange={changehandler} name="taskdate" label="Set End Date" value={taskdate} class="taskdate">
+					</lightning-input>
+				</div>
+				<div class="slds-var-p-around_small">
+					<lightning-button variant="brand" label="Reset" class="slds-var-p-around_small"
+						onclick={resetHandler}></lightning-button>
+					<lightning-button variant="brand" label="Add Task" class="slds-var-p-around_small"
+						onclick={addTaskHandler}></lightning-button>
+
+				</div>
+			</lightning-card>
+		</div>
+		<div class="slds-col">
+			<lightning-card title="To Do List">
+				<div class="slds-var-p-around_small">
+					<template for:each={incompletetask} for:item="currtask" for:index="index">
+						<div key={currtask.taskname} draggable="true" ondragstart={dragStartHandler} data-item={ind}  class="slds-box slds-theme_shade incompletebg">
+							<div class="slds-grid slds-wrap">
+								<div class="slds-col slds-size_8-of-12">
+									<p class="formattaskname">{currtask.taskname}</p>
+									<p>
+										<lightning-formatted-date-time value={currtask.taskdate} year="2-digit"
+											month="short" day="2-digit" weekday="long"></lightning-formatted-date-time>
+									</p>
+								</div>
+								<div class="slds-col slds-size_4-of-12">
+
+									<lightning-button-icon name={index} icon-name="utility:delete"
+										alternative-text="Delete" onclick={removalHandler} class="slds-m-left_xx-small "
+										title="Delete"></lightning-button-icon>
+
+									<lightning-button-icon icon-name="utility:check" alternative-text="check" name={index}
+										onclick={completetaskHandler} class="slds-m-left_xx-small" title="Delete">
+									</lightning-button-icon>
+
+								</div>
+							</div>
+						</div>
+					</template>
+				</div>
+			</lightning-card>
+		</div>
+		<div class="slds-col">
+			<lightning-card title="Completed items">
+				<div class="slds-var-p-around_small" ondragover={allowDrop} ondrop={dropElementHandler}>
+					<template for:each={completetask} for:item="currtask" for:index="index">
+						<div key={currtask.taskname} class="slds-box slds-theme_shade completebg">
+							<p class="formattaskname">{currtask.taskname}</p>
+							<p>
+								<lightning-formatted-date-time value={currtask.taskdate} year="2-digit" month="short"
+									day="2-digit" weekday="long"></lightning-formatted-date-time>
+							</p>
+						</div>
+					</template>
+				</div>
+			</lightning-card>
+		</div>
+	</div>
+</template>
